@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chúc Mừng Năm Mới 2026</title>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Arial', sans-serif; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        
+        /* Đồng hồ đếm ngược */
+        #countdown { font-size: 10rem; font-weight: bold; transition: opacity 1s ease-out; }
+
+        /* Pháo hoa Canvas */
+        #canvas { position: absolute; top: 0; left: 0; z-index: 1; display: none; }
+
+        /* Lì xì / Trái tim */
+        #gift-container { position: relative; z-index: 2; display: none; text-align: center; cursor: pointer; animation: bounce 2s infinite; }
+        .red-packet { font-size: 100px; filter: drop-shadow(0 0 10px red); }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-30px);} 60% {transform: translateY(-15px);} }
+
+        /* Bức thư */
+        #letter {
+            position: absolute; z-index: 3; background: #fff; color: #333; padding: 30px; border-radius: 15px;
+            width: 80%; max-width: 400px; display: none; box-shadow: 0 0 20px gold; line-height: 1.6;
+        }
+        #letter h2 { color: #d4af37; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="countdown">3</div>
+    <canvas id="canvas"></canvas>
+
+    <div id="gift-container" onclick="openLetter()">
+        <div class="red-packet">🧧</div>
+        <p>Bấm vào nhận lộc nè!</p>
+    </div>
+
+    <div id="letter">
+        <h2>Chúc Mừng Năm Mới!</h2>
+        <p id="content">
+            Chào bạn, <br><br>
+            Năm cũ đã qua, năm mới lại đến. Chúc bạn một năm 2026 thật rực rỡ, vạn sự như ý và luôn giữ nụ cười trên môi nhé! Cảm ơn vì đã là một phần tuyệt vời trong năm qua của mình. ✨
+        </p>
+        <button onclick="location.reload()" style="margin-top:10px; cursor:pointer;">Xem lại</button>
+    </div>
+
+    <script>
+        const countdownEl = document.getElementById('countdown');
+        const giftContainer = document.getElementById('gift-container');
+        const letter = document.getElementById('letter');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 1. Xử lý đếm ngược
+        let count = 3;
+        const timer = setInterval(() => {
+            countdownEl.style.opacity = '0'; // Hiệu ứng biến mất dần
+            setTimeout(() => {
+                count--;
+                if (count > 0) {
+                    countdownEl.innerText = count;
+                    countdownEl.style.opacity = '1';
+                } else {
+                    clearInterval(timer);
+                    countdownEl.style.display = 'none';
+                    startFireworks();
+                }
+            }, 500);
+        }, 1000);
+
+        // 2. Hiệu ứng pháo hoa (đơn giản)
+        function startFireworks() {
+            canvas.style.display = 'block';
+            giftContainer.style.display = 'block';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Vẽ pháo hoa giả lập (để đơn giản hóa, mình dùng các vòng tròn màu sắc)
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for(let i=0; i<5; i++) {
+                    ctx.beginPath();
+                    ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*3, 0, Math.PI*2);
+                    ctx.fillStyle = `hsl(${Math.random()*360}, 100%, 50%)`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // 3. Mở thư
+        function openLetter() {
+            giftContainer.style.display = 'none';
+            letter.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
